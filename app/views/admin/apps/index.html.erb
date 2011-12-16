@@ -1,0 +1,23 @@
+<div class="content-box">
+  <div class="content-box-header">
+    <h3>Apps</h3>
+    <%= tabs ["New App", new_admin_app_path] %>
+  </div>
+  <div class="content-box-content">
+		<table>
+			<tr>
+				<th>Title</th>
+				<th>&nbsp;</th>
+			</tr>
+			<% for app in @apps %>
+				<tr class="<%= cycle(:even, :odd) %>">
+					<td><%= link_to app.name, edit_admin_app_path(app) %></td>
+					<td class="action">
+						<%= link_to("Delete", [:admin, app], :confirm => 'Are you sure?', :method => :delete) %>
+					</td>
+				</tr>
+			<% end %>
+		</table>
+		<%= will_paginate @apps %>
+	</div>
+</div>
