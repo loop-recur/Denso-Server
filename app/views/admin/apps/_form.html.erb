@@ -16,7 +16,10 @@
 	    <th><%= form.label :image %></th>
 	    <td>
 				<%= form.file_field :image %>
-				<%= form.object.image_file_name if form.object.image %>
+				<% if form.object.image %>
+					<%= image_tag(form.object.image.url, :size => "80x80") %>
+					<%= form.object.image_file_name %>
+				<% end %>
 			</td>
 	  </tr>
 	  <tr>
