@@ -9,6 +9,7 @@ Denso::Application.routes.draw do
   
   namespace :api do
     resources :apps
+    resources :yelps
   end
   
   root :to => "admin/apps#index"

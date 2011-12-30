@@ -13,6 +13,7 @@ gem 'devise', "1.5.0"
 gem 'omniauth', '1.0.0'
 gem 'less-rails-bootstrap', '~> 1.3.0'
 gem "thin"
+gem 'oauth'
 
 # Gems used only for assets and not required
 # in production environments by default.
