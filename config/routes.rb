@@ -1,7 +1,6 @@
 Denso::Application.routes.draw do
   devise_for :users
 
-  match 'api/apps.json' => 'admin/apps#index', :as => 'apps'
   
   namespace :admin do
     root :to => "apps#index"
