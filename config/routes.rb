@@ -8,6 +8,7 @@ Denso::Application.routes.draw do
   end
   
   match 'api/apps.json' => 'api/apps#index', :as => 'apps', :via => :options
+  match 'api/apps/:id.json' => 'api/apps#show', :as => 'app_install', :via => :options
   match 'api/yelps.json' => 'api/yelps#index', :as => 'yelps', :via => :options
   
   namespace :api do
