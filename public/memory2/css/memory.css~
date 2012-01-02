@@ -1,0 +1,113 @@
+/*
+ * CSS for the memory game
+ */
+
+/* General sytling for the entire page body */
+body
+{
+	background-color: #444444;
+}
+
+
+/* General styling for the menu section */
+
+/* Every class below this one inherits these properties as i understand it */
+.container
+{
+	position: absolute;
+	-webkit-perspective: 800; 
+	-webkit-transform-style: perserve-3d;
+	/* background: blue to black gradient */
+	background: -webkit-gradient(linear, left top, left bottom, from(#0F0FCC), to(#000000));
+
+}
+
+/* For each card image apply the following rules... each card image is a member of
+ * a div inside the #board container, so it inherits the .container stuff...
+ */
+.card
+{
+	position: absolute;
+	height: 100px;
+	background-color: #000000;  /* black */
+
+	/* We want to make sure no one can highlight these elements */
+	-webkit-user-select: none;
+
+	-webkit-animation-name: 'enter';
+	-webkit-animation-duration: 3s;
+	-webkit-animation-interation-count: 1;
+
+
+	/* This 50% stuff should work but doesn't appear to... so we go with px spec
+	 * -webkit-transform-origin: 50% 50%;
+	 */
+	 /*-webkit-transform-origin: 100px 100px; */
+	/* Not quite sure why this isn't just half-way (50px 50px).... something else is goofy */
+	 -webkit-transform-origin: 53px 53px;
+
+	/* This section is the animation that is run whenever the name is
+	 * changed from 'card reveal' to 'card'... essentially moving it back
+	 * to it's original position
+	 */
+	-webkit-transition: all 1.0s ease-in-out;
+	-webkit-transform: scale3d(1, 1, 1);
+}
+
+
+.card: hover
+{
+	/* Create a light shadow box around the card on hover */
+	-webkit-box-shadow: 0px 0px 50px rgba(255,255,255,0.8);
+}
+
+.reveal
+{
+	-webkit-transition: all 1.0s ease-in-out;
+
+	/* Would prefer to use translate3d or translateZ here... but oh well */
+	-webkit-transform: rotateY(180deg) scale3d(1.05, 1.05, 1.05);
+}
+
+.remove
+{
+	-webkit-animation-duration: 3s;
+	-webkit-animation-interation-count: 1;
+	-webkit-transform: translate(0px,0px);  /* for some reason this causes the rotation we want */
+	opacity: 0; /* we want this animation to end with the card being invisible */
+}
+
+
+.face
+{
+	/* each face needs to be positioned, otherwise the browser will
+	 * position them one below the other
+	 */
+	position: absolute;
+	border-style:ridge;
+	border-color:black;
+	height: 100px;
+}
+
+.front
+{
+}
+
+
+.back
+{
+	-webkit-backface-visibility: hidden;
+}
+
+
+/* This is the keyframes animation when the game is entered/loaded
+ * for each card on the board. */
+@-webkit-keyframes enter
+{
+	/* show the cards entering the board space */
+	0% { opacity: 0; }
+	100% { opacity: 1; }
+}
+
+
+

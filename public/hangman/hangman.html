@@ -1,0 +1,801 @@
+<!-- standard file start -->
+<!doctype html>
+<html lang = en>
+
+<!-- header -->
+<head>
+<meta charset = UTF-8>
+<title>Standard Hangman Game</title>
+
+<!-- Moderizer stuff... tag is in case javascript isn't enabled -->
+<script src="js/modernizr-latest.js"></script>
+
+<!-- hangman javascript include -->
+<script type="text/javascript">
+
+window.addEventListener("load", eventWindowLoaded, false);
+
+// Sends debugging information to the javascript console
+var Debugger = function () { };
+Debugger.log = function (message) {
+    try {
+        console.log(message);
+    }
+    catch (exception) {
+        return;
+    }
+}
+
+// For handling syntax errors (e.g. mistyped stuff)
+window.onerror = function(msg, url, line) {
+	alert(msg + ';' + url + ';' + line);
+	return true;
+}
+
+
+function eventWindowLoaded() {
+	Debugger.log("Window Loaded");
+    canvasApp();
+}
+
+
+function canvasSupport() {
+    return Modernizr.canvas;
+}
+
+
+function canvasApp() {
+
+	// Initialize our application variables
+	var maxTries = 6;  // one for each part of the hangman.
+	var maxLetters = 30;
+	var tryNumber = 0;
+	var triedLetters = [];
+	var phraseToGuess = "It will be done with denso";
+	var phraseGuessed = "                          ";
+	var guessedLetters = "";
+	var badGuesses = "";
+	var gameWon = false;
+
+	// here are the handlers for each button
+	var formButtonA = document.getElementById("a");
+	var formButtonB = document.getElementById("b");
+	var formButtonC = document.getElementById("c");
+	var formButtonD = document.getElementById("d");
+	var formButtonE = document.getElementById("e");
+	var formButtonF = document.getElementById("f");
+	var formButtonG = document.getElementById("g");
+	var formButtonH = document.getElementById("h");
+	var formButtonI = document.getElementById("i");
+	var formButtonJ = document.getElementById("j");
+	var formButtonK = document.getElementById("k");
+	var formButtonL = document.getElementById("l");
+	var formButtonM = document.getElementById("m");
+	var formButtonN = document.getElementById("n");
+	var formButtonO = document.getElementById("o");
+	var formButtonP = document.getElementById("p");
+	var formButtonQ = document.getElementById("q");
+	var formButtonR = document.getElementById("r");
+	var formButtonS = document.getElementById("s");
+	var formButtonT = document.getElementById("t");
+	var formButtonU = document.getElementById("u");
+	var formButtonV = document.getElementById("v");
+	var formButtonW = document.getElementById("w");
+	var formButtonX = document.getElementById("x");
+	var formButtonY = document.getElementById("y");
+	var formButtonZ = document.getElementById("z");
+
+	formButtonA.addEventListener('click', formButtonAPressed, false);
+	formButtonB.addEventListener('click', formButtonBPressed, false);
+	formButtonC.addEventListener('click', formButtonCPressed, false);
+	formButtonD.addEventListener('click', formButtonDPressed, false);
+	formButtonE.addEventListener('click', formButtonEPressed, false);
+	formButtonF.addEventListener('click', formButtonFPressed, false);
+	formButtonG.addEventListener('click', formButtonGPressed, false);
+	formButtonH.addEventListener('click', formButtonHPressed, false);
+	formButtonI.addEventListener('click', formButtonIPressed, false);
+	formButtonJ.addEventListener('click', formButtonJPressed, false);
+	formButtonK.addEventListener('click', formButtonKPressed, false);
+	formButtonL.addEventListener('click', formButtonLPressed, false);
+	formButtonM.addEventListener('click', formButtonMPressed, false);
+	formButtonN.addEventListener('click', formButtonNPressed, false);
+	formButtonO.addEventListener('click', formButtonOPressed, false);
+	formButtonP.addEventListener('click', formButtonPPressed, false);
+	formButtonQ.addEventListener('click', formButtonQPressed, false);
+	formButtonR.addEventListener('click', formButtonRPressed, false);
+	formButtonS.addEventListener('click', formButtonSPressed, false);
+	formButtonT.addEventListener('click', formButtonTPressed, false);
+	formButtonU.addEventListener('click', formButtonUPressed, false);
+	formButtonV.addEventListener('click', formButtonVPressed, false);
+	formButtonW.addEventListener('click', formButtonWPressed, false);
+	formButtonX.addEventListener('click', formButtonXPressed, false);
+	formButtonY.addEventListener('click', formButtonYPressed, false);
+	formButtonZ.addEventListener('click', formButtonZPressed, false);
+
+
+    if (!canvasSupport()) {
+        return;
+    }
+
+    var manCanvas = document.getElementById("canvasMan");
+    var context = manCanvas.getContext("2d");
+
+
+	/*
+	 * drawDashes - this function takes care to draw the dashes section and
+	 * any letters that need to be placed on top of those dashses.
+	 */
+	function drawDashes () {
+    	Debugger.log("Drawing Dashes");
+		context.save();
+
+		lineStartX = 125;
+		lineStartY = 320;
+		charLen = 15;
+		charSpace = 2;
+		rowSpace = 35;
+		var row = 0;
+		var chr = 0;
+
+		var x = lineStartX;
+		var y = lineStartY;
+
+		var dashStartX = 0;
+		var dashStartY = 0;
+		var dashEndX = 0;
+		var dashEndY = 0;
+		var charIdx = 0;
+
+		// Define the style for the dashes and letters.
+		context.strokeStyle = "black";
+		context.fillStyle="#8ED6FF";
+		context.lineWidth = 2;
+		context.font = "20px _sans";
+
+		// There are 10 dashes per line (because max phrase is 30
+		// characters... including spaces.
+		for (row = 0; row < 3; row += 1) {
+			dashStartX = lineStartX; // beginning of row...
+			dashStartY = lineStartY + (row * rowSpace);
+			// Debugger.log("Starting X = " + dashStartX.toString());
+			for (col = 0; col < 10; col +=1, charIdx += 1) {
+				dashStartX += (charSpace + charLen);
+				dashEndX = dashStartX + charLen;
+				dashEndY = dashStartY;
+
+				if (charIdx >= phraseToGuess.length) {
+					continue;
+				}
+				if (phraseToGuess.charAt(charIdx) == ' ') {
+					continue;
+				}
+			
+				context.beginPath();
+				context.moveTo(dashStartX, dashStartY);
+				context.lineTo(dashEndX, dashEndY);
+				context.stroke();
+				context.closePath();
+
+				// Debugger.log("Phrase Guessed so far = " + phraseGuessed)
+				// If this letter has been guessed... display it.
+				if (phraseGuessed.charAt(charIdx) != ' ') {
+					// Technically, we should be dealing with each character width
+					// and adjusting placement for each letter to make the spacing
+					// uniform, but we aren't going to write a font layout engine,
+					// so deal with the worst offenders... mainly 'I'.
+					if (phraseGuessed.charAt(charIdx) == 'I')
+					{
+						context.strokeText(phraseGuessed.charAt(charIdx).toUpperCase(),
+											dashStartX + 5, dashStartY - 4, charLen);
+					}
+					else
+					{
+						context.strokeText(phraseGuessed.charAt(charIdx).toUpperCase(),
+											dashStartX, dashStartY - 4, charLen);
+					}
+				}
+
+				// If we need to hyphenate the word...
+				if ((col == 9) && (phraseToGuess.charAt(charIdx + 1) != ' ')) {
+					context.strokeStyle = "red";
+					context.beginPath();
+					context.moveTo((dashEndX + charSpace), (dashStartY - 8));
+					context.lineTo((dashEndX + charSpace + (charLen / 2)) , dashEndY - 8);
+					context.stroke();
+					context.closePath();
+					context.strokeStyle = "black";
+				}
+
+				if (phraseGuessed.toUpperCase() == phraseToGuess.toUpperCase())
+				{
+					Debugger.log("drawDashes thinks you won");
+					gameWon = true;
+				}
+			}
+		}
+
+		context.restore();
+	}
+
+
+	/*
+	 * drawGuesseedLetters()
+	 *		This function draws onto the canvas those letters which have
+	 *		already been guessed.
+	 */
+	function drawGuessedLetters()
+	{
+    	Debugger.log("Drawing Guessed Letters");
+		context.save();
+
+		startX = 350;
+		startY = 100;
+		charLen = 20;
+		var row = 0;
+		var col = 0;
+
+		var x = startX;
+		var y = startY;
+		var charIdx = 0;
+
+		// Draw the bounding box
+		context.strokeStyle = "black";
+		
+
+		// Define the style for the dashes and letters.
+		context.fillStyle="orange";
+		context.lineWidth = 2;
+
+		// Draw the bounding box
+		context.strokeStyle = "black";
+		context.strokeRect((startX - (charLen / 2)), (startY - charLen),
+							(charLen * 6 + (charLen / 2)), (8 * charLen + (charLen / 2)));
+
+		// Show the guessed letters title
+		context.strokeStyle = "orange";
+		context.font = "28px _sans";
+		context.fillText("Letters Tried", (startX - 15), (startY - 30));
+
+		// Define the style for the guessed letters
+		context.font = "20px _sans";
+
+		// There are 4 letters/columns per row. 26 leters means we
+		// need 7 rows...
+		for (row = 0; row < 7; row += 1)
+		{
+			x = startX; // beginning of every row...
+			y = startY + (row * charLen);
+
+			for (col = 0; col < 4; col++, charIdx++)
+			{
+				x += charLen;
+				context.strokeText(guessedLetters.charAt(charIdx).toUpperCase(), x, y, charLen);
+			}
+		}
+
+		context.restore();
+	}
+
+
+	/*
+	 * drawHangman (numParts, x, y)
+	 *		This function draws the entire hangman object.   It takes
+	 *      the number of parts of the hangman that should be drawn on
+	 *      the screen, and where to place him in x,y coordinates.
+	 */
+	function drawHangman(numParts, x, y) 
+	{
+		function drawHead() {
+   		 	Debugger.log("Drawing Head");
+			context.save();
+			var centerX = 218;
+			var centerY = 92;
+			var radius  = 40;
+
+			// setup the attributes of the head
+			context.beginPath();
+			context.strokeStyle = "black";
+			context.lineWidth = 5;
+			context.arc(centerX, centerY, radius, (Math.PI/180)*0, (Math.PI/180)*360, false);
+
+			// After the arch has been defined... then we can fill it.
+			context.fillStyle="#8ED6FF";
+			context.fill();
+	
+			// Draw the circle for the head
+			context.stroke();
+			context.closePath();	
+
+			context.restore();
+		}
+
+		function drawBody() {
+   		 	Debugger.log("Drawing Body");
+			context.save();
+			var xPos = 210;
+			var yPos = 132;
+			var width = 15;
+			var height = 100;
+		
+			context.strokeSytle = "black";
+			context.lineWidth = 5;
+			context.fillStyle="#8ED6FF";
+			context.fillRect(xPos, yPos, width, height);
+			context.strokeRect(xPos, yPos, width, height);
+			
+			context.restore();
+		}
+
+		function drawLeftArm() {
+   		 	Debugger.log("Drawing Left Arm");
+			context.save();
+			shoulderX = 210;
+			shoulderY = 150;
+			var tmpX = shoulderX;
+			var tmpY = shoulderY;
+
+			// Define the paths that create the arm
+			context.strokeSytle = "black";
+			context.fillStyle="#8ED6FF";
+			context.lineWidth = 5;
+			context.beginPath();
+			context.moveTo(shoulderX, shoulderY);
+
+			tmpX -= 30;
+			tmpY += 15;
+			context.lineTo(tmpX, tmpY); // 180,165
+
+			context.arcTo((tmpX - 30), (tmpY - 30), (tmpX - 15), (tmpY - 35), 10);  //(150,135) (165,130) (10)
+
+			tmpY -= 18;
+			context.lineTo(tmpX, tmpY);
+
+			context.lineTo(shoulderX, shoulderY - 5);
+			context.closePath();
+			context.fill();
+
+			// Actually draw the lines defined above.	
+			context.stroke();
+			context.restore();
+		}
+
+		// Drawing the right arm is the same as the left, just the
+		// "tmpX -=" parts are changed to "tmpX +="
+		function drawRightArm() {
+   		 	Debugger.log("Drawing Right Arm");
+			context.save();
+			shoulderX = 225;
+			shoulderY = 150;
+			var tmpX = shoulderX;
+			var tmpY = shoulderY;
+
+			// Define the paths that create the arm
+			context.strokeSytle = "black";
+			context.fillStyle="#8ED6FF";
+			context.lineWidth = 5;
+			context.beginPath();
+			context.moveTo(shoulderX, shoulderY);
+
+			tmpX += 30;
+			tmpY += 15;
+			context.lineTo(tmpX, tmpY); // 180,165
+
+			context.arcTo((tmpX + 30), (tmpY - 30), (tmpX + 15), (tmpY - 35), 10);  //(150,135) (165,130) (10)
+
+			tmpY -= 18;
+			context.lineTo(tmpX, tmpY);
+
+			context.lineTo(shoulderX, shoulderY - 5);
+			context.closePath();
+			context.fill();
+
+			// Actually draw the lines defined above.	
+			context.stroke();
+			context.restore();
+		}
+
+		function drawLeftLeg() {
+   		 	Debugger.log("Drawing Left Leg");
+			context.save();
+
+			// eventually we can pass these functions the hip vars to
+			// animate the leg moving onto the body.
+			hipX = 210;
+			hipY = 225;
+			var tmpX = hipX;
+			var tmpY = hipY;
+
+			// Define the paths that create the leg
+			context.strokeSytle = "black";
+			context.fillStyle="#8ED6FF";
+			context.lineWidth = 5;
+			context.beginPath();
+			context.moveTo(hipX, hipY);
+
+			tmpX -= 40;
+			tmpY += 20;
+			context.lineTo(tmpX, tmpY);
+
+			context.arcTo((tmpX - 7), (tmpY + 30), (tmpX + 20), (tmpY + 40), 10);  //(150,135) (165,130) (10)
+
+			tmpX += 10;
+			tmpY += 40;
+			context.lineTo(tmpX, tmpY);
+
+			tmpY -= 30;
+			context.lineTo(tmpX, tmpY);
+
+			tmpX = hipX + 7;
+			tmpY = hipY + 7;
+			context.lineTo(tmpX, tmpY);
+
+			context.closePath();
+			context.fill();
+
+			// Actually draw the lines defined above.	
+			context.stroke();
+			context.restore();
+		}	
+
+		// Drawing the right leg is the same as the left, just the
+		// "tmpX -=" parts are changed to "tmpX +="
+		function drawRightLeg() {
+   		 	Debugger.log("Drawing Right Leg");
+			context.save();
+
+			// eventually we can pass these functions the hip vars to
+			// animate the leg moving onto the body.
+			hipX = 225;
+			hipY = 225;
+			var tmpX = hipX;
+			var tmpY = hipY;
+
+			// Define the paths that create the leg
+			context.strokeSytle = "black";
+			context.fillStyle="#8ED6FF";
+			context.lineWidth = 5;
+			context.beginPath();
+			context.moveTo(hipX, hipY);
+
+			tmpX += 40;
+			tmpY += 20;
+			context.lineTo(tmpX, tmpY);
+
+			context.arcTo((tmpX + 7), (tmpY + 30), (tmpX - 20), (tmpY + 40), 10);  //(150,135) (165,130) (10)
+
+			tmpX -= 10;
+			tmpY += 40;
+			context.lineTo(tmpX, tmpY);
+
+			tmpY -= 30;
+			context.lineTo(tmpX, tmpY);
+
+			tmpX = hipX - 7;
+			tmpY = hipY + 7;
+			context.lineTo(tmpX, tmpY);
+
+			context.closePath();
+			context.fill();
+
+			// Actually draw the lines defined above.	
+			context.stroke();
+			context.restore();
+		}
+
+		// logic for drawing the hangman
+		if (numParts >= 1)
+		{
+			drawHead();
+		}
+
+		if (numParts >= 2)
+		{
+			drawBody();
+		}
+
+		if (numParts >= 3)
+		{
+			drawLeftArm();
+		}
+
+		if (numParts >= 4)
+		{
+			drawRightArm();
+		}
+
+		if (numParts >= 5)
+		{
+			drawLeftLeg();
+		}
+
+		if (numParts >= 6)
+		{
+			drawRightLeg();
+		}
+	}
+
+
+	/*
+	 * drawScreen - draws everything on the screen.
+	 */
+    function drawScreen() {
+        // background color
+        context.fillStyle = "#ffff0a";
+        context.fillRect(0, 0, 500, 400);
+
+
+        // gallows image
+        var gallowsImage = new Image();
+        gallowsImage.src = "img/gallows.png";
+        gallowsImage.onload = function() {
+            context.drawImage(gallowsImage, 0, 0);
+        }
+
+		// We always have to draw the dashes with the
+		// letters that have been guessed.	
+		drawDashes();
+		drawHangman(badGuesses.length, 0, 0);
+		drawGuessedLetters();
+
+
+		if (badGuesses.length > 6)
+		{
+			Debugger.log("YOU LOOSE");
+        	// you loose image
+	        var youlooseImage = new Image();
+	        youlooseImage.src = "img/youloose.png";
+			youlooseImage.onload = function()
+			{
+	            context.drawImage(youlooseImage, 350, 300);
+	        }
+		}
+		else
+		{
+			// If you have won then we act appropriately.
+			if (gameWon == true)
+			{
+				Debugger.log("YOU WIN!");
+        		// you win image
+		        var youwinImage = new Image();
+		        youwinImage.src = "img/youwin.png";
+				youwinImage.onload = function()
+				{
+		            context.drawImage(youwinImage, 350, 300);
+		        }
+			}
+		}
+
+	}
+
+	/*
+	 * This comes from From openjs.com, and allows us to set
+	 * specific characters into a string.
+	 */
+	function setCharAt(str, index, chr) {
+		if(index > str.length-1)
+		{
+			return str;
+		}
+		return str.substr(0, index) + chr + str.substr(index+1);
+	}
+
+
+	/*
+	 * handleCharGuess(chr) - this function is called everytime the
+	 * user makes a guess (clicks a button right now).  It handles
+	 * determining what to do with that character, then calling
+	 * drawScreen to redraw everything with updated information.
+	 */
+	function handleCharGuess(chr) {
+    	//Debugger.log("User Guessed letter '" + chr + "'");
+
+		var i = 0;
+		var foundChar = false;
+
+		// Only take care of this logic if the game is not over.
+		if (badGuesses.length < 7)
+		{
+			for (i = 0; i < 26; i++)
+			{
+				if (guessedLetters.charAt(i).toUpperCase() == chr)
+				{
+					alert("You have already guessed letter '" + chr + "'.\n Please try again");
+					return;
+				}
+			}
+
+			// otherwise they haven't guessed this letter yet...
+			guessedLetters += chr;
+			for (i = 0; (i < phraseToGuess.length); i++)
+			{
+				if ((phraseToGuess.charAt(i).toUpperCase() == chr))
+				{
+					phraseGuessed = setCharAt(phraseGuessed, i, chr);
+					foundChar = true;
+				}
+			}
+
+			if (!foundChar)
+			{
+				badGuesses += chr;
+				// Debugger.log("Bad Guesses = " + badGuesses);
+			}
+		}
+
+		drawScreen();
+	}
+
+
+
+	/*
+	 * At this point these functions are specific to each button
+	 * defined in the html section.  We only send capital letters
+	 * to handleCharGuess, so we don't have to play toUpperCase 
+	 * games.
+	 */
+	function formButtonAPressed(button) {
+		handleCharGuess('A');
+	}
+
+	function formButtonBPressed(button) {
+		handleCharGuess('B');
+	}
+
+	function formButtonCPressed(button) {
+		handleCharGuess('C');
+	}
+
+	function formButtonDPressed(button) {
+		handleCharGuess('D');
+	}
+
+	function formButtonEPressed(button) {
+		handleCharGuess('E');
+	}
+
+	function formButtonFPressed(button) {
+		handleCharGuess('F');
+	}
+
+	function formButtonGPressed(button) {
+		handleCharGuess('G');
+	}
+
+	function formButtonHPressed(button) {
+		handleCharGuess('H');
+	}
+
+	function formButtonIPressed(button) {
+		handleCharGuess('I');
+	}
+
+	function formButtonJPressed(button) {
+		handleCharGuess('J');
+	}
+
+	function formButtonKPressed(button) {
+		handleCharGuess('K');
+	}
+
+	function formButtonLPressed(button) {
+		handleCharGuess('L');
+	}
+
+	function formButtonMPressed(button) {
+		handleCharGuess('M');
+	}
+
+	function formButtonNPressed(button) {
+		handleCharGuess('N');
+	}
+
+	function formButtonOPressed(button) {
+		handleCharGuess('O');
+	}
+
+	function formButtonPPressed(button) {
+		handleCharGuess('P');
+	}
+
+	function formButtonQPressed(button) {
+		handleCharGuess('Q');
+	}
+
+	function formButtonRPressed(button) {
+		handleCharGuess('R');
+	}
+
+	function formButtonSPressed(button) {
+		handleCharGuess('S');
+	}
+
+	function formButtonTPressed(button) {
+		handleCharGuess('T');
+	}
+
+	function formButtonUPressed(button) {
+		handleCharGuess('U');
+	}
+
+	function formButtonVPressed(button) {
+		handleCharGuess('V');
+	}
+
+	function formButtonWPressed(button) {
+		handleCharGuess('W');
+	}
+
+	function formButtonXPressed(button) {
+		handleCharGuess('X');
+	}
+
+	function formButtonYPressed(button) {
+		handleCharGuess('Y');
+	}
+
+	function formButtonZPressed(button) {
+		handleCharGuess('Z');
+	}
+
+	// We have to draw the screen at the start of the game
+	// the other drawScreen calls are made in response to user
+	// input.
+    drawScreen();
+}
+
+
+
+</script>
+</head>
+
+
+<!-- body -->
+<body>
+
+<!-- container for the canvas section -->
+<div style="position: absolute; top: 75px; left: 50px;">
+	<canvas id="canvasMan" width="500" height="400">
+		Your browser doesn't like my HTML 5 canvas game
+	</canvas>
+</div>
+
+
+
+<!-- form for holding all the buttons -->
+<form>
+
+<!-- Using div to set the button positions -->
+<div style="position: absolute; top: 10px; left: 90px;">
+	<input type=button id="a", value="A">
+	<input type=button id="b", value="B">
+	<input type=button id="c", value="C">
+	<input type=button id="d", value="D">
+	<input type=button id="e", value="E">
+	<input type=button id="f", value="F">
+	<input type=button id="g", value="G">
+	<input type=button id="h", value="H">
+	<input type=button id="i", value="I">
+	<input type=button id="j", value="J">
+	<input type=button id="k", value="K">
+	<input type=button id="l", value="L">
+	<input type=button id="m", value="M">
+<br>
+	<input type=button id="n", value="N">
+	<input type=button id="o", value="O">
+	<input type=button id="p", value="P">
+	<input type=button id="q", value="Q">
+	<input type=button id="r", value="R">
+	<input type=button id="s", value="S">
+	<input type=button id="t", value="T">
+	<input type=button id="u", value="U">
+	<input type=button id="v", value="V">
+	<input type=button id="w", value="W">
+	<input type=button id="x", value="X">
+	<input type=button id="y", value="Y">
+	<input type=button id="z", value="Z">
+</div>
+
+</form>
+
+</body>
+</html>
