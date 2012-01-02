@@ -7,8 +7,13 @@ Denso::Application.routes.draw do
     resources :users
   end
   
-  match 'api/apps.json' => 'api/apps#index', :as => 'apps'
-  match 'api/yelps.json' => 'api/yelps#index', :as => 'yelps'
+  match 'api/apps.json' => 'api/apps#index', :as => 'apps', :via => :options
+  match 'api/yelps.json' => 'api/yelps#index', :as => 'yelps', :via => :options
+  
+  namespace :api do
+    resources :apps
+    resources :yelps
+  end
   
   root :to => "admin/apps#index"
 end
