@@ -1,11 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
-#   Mayor.create(:name => 'Emanuel', :city => cities.first)
-
 get_file = lambda{ |file| File.open("#{Rails.root}/config/canned_data/"+file) }
 
 puts("Creating admins...")
@@ -27,7 +19,7 @@ App.create!(:name => "Hangman3", :description => "A game of more more wits and l
 puts("Hangman3 created.")
 
 puts("Creating Memory 1...")
-App.create!(:name => "Memory 1", :description => "Test your memory. With Tiles!.", :image => get_file["memory1/image.png"], :package => get_file["memory1/memory1.zip"], :price => "10.99")
+App.create!(:name => "Memory 1", :description => "Test your memory. With Tiles!.", :image => get_file["memory1/image.png"], :package => get_file["memory1/memory1.zip"], :price => "10.99", :featured => true)
 puts("Memory 1 created.")
 
 puts("Creating Memory 2...")
