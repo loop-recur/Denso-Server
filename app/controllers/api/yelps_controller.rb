@@ -3,7 +3,8 @@ module Api
 class YelpsController < ApplicationController
   
   def index
-    response = call_yelp rescue FakeYelp.response(params[:term])
+    response = call_yelp rescue call_fake
+    response = call_fake if response["error"]
     render(:json => response)
   end
   
@@ -21,6 +22,10 @@ private
                                                          :token => 'edoyaJIsvBtJaefxXE4nHD3f7eOZJhXf',
                                                          :token_secret => 'QcQTiW-fO_2sUL70XHvemcxD9gs')
     client.search(request)
+  end
+  
+  def call_fake
+    FakeYelp.response(params[:term])
   end
 end
 
