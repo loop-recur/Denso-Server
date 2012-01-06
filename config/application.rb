@@ -49,8 +49,3 @@ module Denso
 end
 
 require 'lib/yelpster/lib/yelpster'
-
-PAPERCLIP_DEFAULTS = {
-  :url => "/files/:class/:id_partition/:style/:basename.:extension",
-  :path => ":rails_root/public/files/:class/:id_partition/:style/:basename.:extension"
-}
