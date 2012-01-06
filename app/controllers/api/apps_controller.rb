@@ -3,7 +3,7 @@ module Api
 class AppsController < ApplicationController
   
   def index
-    @apps = params[:html5] ? App.all : App.htmls
+    @apps = params[:apks] ? App.all : App.htmls
     render(:json => @apps.map(&:to_hash))
   end
   
