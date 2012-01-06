@@ -9,6 +9,7 @@ gem 'will_paginate', "3.0.2"
 gem 'pg'
 gem 'paperclip', "2.4.5"
 gem 'json'
+gem "aws-s3"
 gem 'devise', "1.5.0"
 gem 'omniauth', '1.0.0'
 gem 'less-rails-bootstrap', '~> 1.3.0'
