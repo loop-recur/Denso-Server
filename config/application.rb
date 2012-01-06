@@ -48,4 +48,4 @@ module Denso
   end
 end
 
-require 'lib/yelpster/lib/yelpster'
+require "#{Rails.root}/lib/yelpster/lib/yelpster"
