@@ -6,7 +6,7 @@ gem 'rails', '3.1.3'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'will_paginate', "3.0.2"
-gem 'pg'
+gem 'sqlite3'
 gem 'paperclip', "2.4.5"
 gem 'json'
 gem "aws-s3"
