@@ -33,3 +33,30 @@ puts("Memory 3 created.")
 puts("Creating Hangman Apk...")
 App.create!(:name => "Hangman Apk", :description => "Hangman as an android app!", :image => get_file["hangman_apk/image.png"], :package => get_file["hangman_apk/hangman.apk"], :price => "19.99")
 puts("Hangman Apk created.")
+
+puts("Creating Categories...")
+
+puts("Creating Media Category...")
+Category.create(:name => 'media')
+
+puts("Creating Social Category...")
+Category.create(:name => 'social')
+
+puts("Creating Games Category...")
+Category.create(:name => 'games')
+
+puts("Creating Stats Category...")
+Category.create(:name => 'stats')
+
+puts("Creating Shopping Category...")
+Category.create(:name => 'shopping')
+
+puts("Associating Hangman apps with Games Category")
+games_category = Category.find_by_name('games')
+hangman_apps = App.where('name LIKE ?', '%hangman%')
+hangman_apps.each {|a| games_category.apps << a}
+
+puts("Associating Memory apps with Stats Category")
+stats_category = Category.find_by_name('stats')
+memory_apps = App.where('name LIKE ?', '%memory%')
+memory_apps.each {|a| stats_category.apps << a}
