@@ -43,3 +43,8 @@ Denso::Application.configure do
     :path => ":rails_root/public/files/:class/:id_partition/:style/:basename.:extension"
   }
 end
+
+PAPERCLIP_DEFAULTS = {
+  :url => "/files/:class/:id_partition/:style/:basename.:extension",
+  :path => ":rails_root/public/files/:class/:id_partition/:style/:basename.:extension"
+}
