@@ -6,7 +6,6 @@ gem 'rails', '3.1.3'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'will_paginate', "3.0.2"
-gem 'sqlite3'
 gem 'paperclip', "2.4.5"
 gem 'json'
 gem "aws-s3"
@@ -26,6 +25,7 @@ group :assets do
 end
 
 group :test do
+  gem 'sqlite3'
   gem "autotest-rails", "4.1.1"
   gem 'factory_girl_rails', '1.4.0'
   gem 'rspec', "2.7.0"
@@ -37,6 +37,7 @@ end
 gem 'jquery-rails'
 
 group :development do
+  gem 'sqlite3'
 	gem "rspec-rails", "2.7.0"
 end
 
