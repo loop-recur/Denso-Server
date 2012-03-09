@@ -9,7 +9,7 @@ class ProfilesController < ApplicationController
   
   def update
     @profile = Profile.find(params[:id])
-    @profile.update_attributes(params[:profile])
+    @profile.update_attribute(:avatar, params[:avatar])
     render(:json => Profile.all.map(&:to_hash))
   end
   

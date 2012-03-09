@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120308214102) do
+ActiveRecord::Schema.define(:version => 20120309212559) do
 
   create_table "apps", :force => true do |t|
     t.string   "name"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(:version => 20120308214102) do
   create_table "preferences", :force => true do |t|
     t.integer  "seat_id"
     t.boolean  "seat_heater"
-    t.boolean  "air_bags"
+    t.boolean  "airbags"
     t.integer  "temp_level"
     t.integer  "ac_level"
     t.datetime "created_at"
