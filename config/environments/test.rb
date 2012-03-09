@@ -38,3 +38,8 @@ Denso::Application.configure do
   config.active_support.deprecation = :stderr
   config.action_mailer.default_url_options = { :host => 'http://denso.com' }
 end
+
+PAPERCLIP_DEFAULTS = {
+  :url => "/files/:class/:id_partition/:style/:basename.:extension",
+  :path => ":rails_root/public/files/:class/:id_partition/:style/:basename.:extension"
+}

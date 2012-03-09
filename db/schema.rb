@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120102180633) do
+ActiveRecord::Schema.define(:version => 20120308214102) do
 
   create_table "apps", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,48 @@ ActiveRecord::Schema.define(:version => 20120102180633) do
     t.datetime "updated_at"
     t.boolean  "featured"
     t.boolean  "installed",            :default => false
+  end
+
+  create_table "cars", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cars_profiles", :force => true do |t|
+    t.integer  "car_id"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "preferences", :force => true do |t|
+    t.integer  "seat_id"
+    t.boolean  "seat_heater"
+    t.boolean  "air_bags"
+    t.integer  "temp_level"
+    t.integer  "ac_level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "ac_on"
+    t.boolean  "defrost_on"
+  end
+
+  create_table "profiles", :force => true do |t|
+    t.string   "name"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "seats", :force => true do |t|
+    t.string   "kind"
+    t.integer  "cars_profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
