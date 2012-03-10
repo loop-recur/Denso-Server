@@ -3,7 +3,7 @@ module Api
 class AppsController < ApplicationController
   
   def index
-    @apps = params[:apks] ? App.all : App.htmls
+    @apps = (params[:apks] ? App.all : App.htmls).uniq
     render(:json => @apps.map(&:to_hash))
   end
   
@@ -13,6 +13,7 @@ class AppsController < ApplicationController
     @app.update_attribute(:installed, !@app.installed)
     render(:json => @app.to_hash)
   end
+
 end
 
 end

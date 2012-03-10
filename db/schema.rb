@@ -12,6 +12,11 @@
 
 ActiveRecord::Schema.define(:version => 20120309212559) do
 
+  create_table "app_categories", :id => false, :force => true do |t|
+    t.integer "app_id"
+    t.integer "category_id"
+  end
+
   create_table "apps", :force => true do |t|
     t.string   "name"
     t.text     "description"
@@ -41,6 +46,12 @@ ActiveRecord::Schema.define(:version => 20120309212559) do
     t.integer  "profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "categories", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
   end
 
   create_table "preferences", :force => true do |t|

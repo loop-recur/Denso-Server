@@ -11,6 +11,8 @@ Denso::Application.routes.draw do
   match 'api/apps.json' => 'api/apps#index', :as => 'apps', :via => :options
   match 'api/apps/:id.json' => 'api/apps#show', :as => 'app_install', :via => :options
   match 'api/yelps.json' => 'api/yelps#index', :as => 'yelps', :via => :options
+  match 'api/profiles.json' => 'api/profiles#index', :as => 'profiles', :via => :options
+  match 'api/profile/:id.json' => 'api/profiles#update', :as => 'profile_update', :via => :options
   
   namespace :api do
     resources :apps
@@ -21,6 +23,8 @@ Denso::Application.routes.draw do
       end
     end
     resources :yelps
+    resources :categories
+    resources :searches
   end
   
   root :to => "admin/apps#index"
