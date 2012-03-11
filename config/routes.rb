@@ -8,6 +8,7 @@ Denso::Application.routes.draw do
   end
   
   match 'api/preferences.json' => 'api/preferences#index', :as => 'preferences', :via => :options
+  match 'api/preferences/:id.json' => 'api/preferences#create', :as => 'preference_create', :via => :options
   match 'api/categories.json' => 'api/categories#index', :as => 'categories', :via => :options
   match 'api/searches.json' => 'api/searches#index', :as => 'searches', :via => :options
   match 'api/apps.json' => 'api/apps#index', :as => 'apps', :via => :options
