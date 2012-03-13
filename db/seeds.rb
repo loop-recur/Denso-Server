@@ -37,26 +37,29 @@ puts("Hangman Apk created.")
 puts("Creating Categories...")
 
 puts("Creating Media Category...")
-Category.create(:name => 'media')
+Category.create(:name => 'Media')
 
 puts("Creating Social Category...")
-Category.create(:name => 'social')
+Category.create(:name => 'Social')
 
 puts("Creating Games Category...")
-Category.create(:name => 'games')
+Category.create(:name => 'Games')
 
 puts("Creating Stats Category...")
-Category.create(:name => 'stats')
+Category.create(:name => 'Stats')
 
 puts("Creating Shopping Category...")
-Category.create(:name => 'shopping')
+Category.create(:name => 'Shopping')
+
+puts("Creating Shopping Category...")
+Category.create(:name => 'Car')
 
 puts("Associating Hangman apps with Games Category")
-games_category = Category.find_by_name('games')
+games_category = Category.find_by_name('Games')
 hangman_apps = App.where('name LIKE ?', '%hangman%')
 hangman_apps.each {|a| games_category.apps << a}
 
 puts("Associating Memory apps with Stats Category")
-stats_category = Category.find_by_name('stats')
+stats_category = Category.find_by_name('Social')
 memory_apps = App.where('name LIKE ?', '%memory%')
 memory_apps.each {|a| stats_category.apps << a}
