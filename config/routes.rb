@@ -7,6 +7,7 @@ Denso::Application.routes.draw do
     resources :users
   end
   
+  match 'api/proxies.json' => 'api/proxies#index', :as => 'proxies', :via => :options
   match 'api/preferences.json' => 'api/preferences#index', :as => 'preferences', :via => :options
   match 'api/preferences/:id.json' => 'api/preferences#create', :as => 'preference_create', :via => :options
   match 'api/categories.json' => 'api/categories#index', :as => 'categories', :via => :options
@@ -20,6 +21,7 @@ Denso::Application.routes.draw do
   namespace :api do
     resources :apps
     resources :preferences
+    resources :proxies
     resources :profiles do
       member do
         post :update
