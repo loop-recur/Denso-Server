@@ -4,7 +4,7 @@ class YelpCaller
     def call_yelp(params)
       @params = params
       response = get_yelp_response rescue get_fake_response
-      response = get_fake_response if response["error"]
+      response = get_fake_response if (!response || response["error"])
       response
     end
   
