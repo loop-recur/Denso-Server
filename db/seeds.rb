@@ -56,10 +56,10 @@ Category.create(:name => 'Car')
 
 puts("Associating Hangman apps with Games Category")
 games_category = Category.find_by_name('Games')
-hangman_apps = App.where('name LIKE ?', '%hangman%')
+hangman_apps = App.where('name LIKE ?', '%Hangman%')
 hangman_apps.each {|a| games_category.apps << a}
 
 puts("Associating Memory apps with Stats Category")
 stats_category = Category.find_by_name('Social')
-memory_apps = App.where('name LIKE ?', '%memory%')
+memory_apps = App.where('name LIKE ?', '%Memory%')
 memory_apps.each {|a| stats_category.apps << a}
