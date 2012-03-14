@@ -4,7 +4,7 @@ class YelpCaller
     def call_yelp(params)
       @params = params
       response = get_yelp_response rescue get_fake_response
-      response = get_fake_response if (!response || response["error"])
+      response = get_fake_response if (response.blank? || response["error"])
       response
     end
   
@@ -32,14 +32,11 @@ class YelpCaller
     end
   
     def rememoize(response)
-      Rails.logger.info("\n\n\n========MEMOIZing: #{call_key.inspect}=======\n\n\n")
       responses[call_key] = response
       response
     end
   
     def memoized
-      Rails.logger.info("\n\n\n========CHecking: #{call_key.inspect}=======\n\n\n")
-      Rails.logger.info("\n\n\n========Responses: #{responses.inspect}=======\n\n\n")
       responses[call_key]
     end
   

@@ -17,11 +17,15 @@ Denso::Application.routes.draw do
   match 'api/yelps.json' => 'api/yelps#index', :as => 'yelps', :via => :options
   match 'api/profiles.json' => 'api/profiles#index', :as => 'profiles', :via => :options
   match 'api/profile/:id.json' => 'api/profiles#update', :as => 'profile_update', :via => :options
+  match 'api/purchases.json' => 'api/purchases#index', :as => 'purchases', :via => :options
+  match 'api/favorites.json' => 'api/favorites#index', :as => 'favorites', :via => :options
   
   namespace :api do
     resources :apps
+    resources :favorites
     resources :preferences
     resources :proxies
+    resources :purchases
     resources :profiles do
       member do
         post :update

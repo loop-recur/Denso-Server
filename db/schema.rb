@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120311175418) do
+ActiveRecord::Schema.define(:version => 20120314034646) do
 
   create_table "app_categories", :id => false, :force => true do |t|
     t.integer "app_id"
@@ -55,6 +55,18 @@ ActiveRecord::Schema.define(:version => 20120311175418) do
     t.string   "name"
   end
 
+  create_table "favorites", :force => true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "phone"
+    t.string   "rating_img_url"
+    t.string   "latitude"
+    t.string   "longitude"
+    t.integer  "profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "preferences", :force => true do |t|
     t.integer  "seat_id"
     t.boolean  "seat_heater"
@@ -73,6 +85,13 @@ ActiveRecord::Schema.define(:version => 20120311175418) do
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "purchases", :force => true do |t|
+    t.integer  "profile_id"
+    t.integer  "app_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
