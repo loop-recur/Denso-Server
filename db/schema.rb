@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120314034646) do
+ActiveRecord::Schema.define(:version => 20120314173840) do
 
   create_table "app_categories", :id => false, :force => true do |t|
     t.integer "app_id"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20120314034646) do
     t.integer  "profile_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "favorite"
   end
 
   create_table "preferences", :force => true do |t|
