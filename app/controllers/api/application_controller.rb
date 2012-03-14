@@ -4,6 +4,7 @@ class ApplicationController < ::ApplicationController
   skip_before_filter :require_http_authentication
   before_filter :cors_preflight_check
   after_filter :cors_set_access_control_headers
+  before_filter :parse_json
 
   
   def cors_set_access_control_headers
@@ -21,6 +22,16 @@ class ApplicationController < ::ApplicationController
 
       render :text => '', :content_type => 'text/plain'
     end
+  end
+  
+private
+
+  def parse_json
+    setJsonParams(JSON.parse(params[:json])) if params[:json]
+  end
+  
+  def setJsonParams(attrs)
+    params.merge!(attrs);
   end
   
 end
