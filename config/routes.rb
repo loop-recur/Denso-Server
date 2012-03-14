@@ -18,6 +18,7 @@ Denso::Application.routes.draw do
   match 'api/profiles.json' => 'api/profiles#index', :as => 'profiles', :via => :options
   match 'api/profile/:id.json' => 'api/profiles#update', :as => 'profile_update', :via => :options
   match 'api/purchases.json' => 'api/purchases#index', :as => 'purchases', :via => :options
+  match 'api/purchases/destroy.json' => 'api/purchases#destroy', :as => 'purchases_destroy', :via => :options
   match 'api/favorites.json' => 'api/favorites#index', :as => 'favorites', :via => :options
   
   namespace :api do

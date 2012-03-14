@@ -8,12 +8,12 @@ class PurchasesController < ApplicationController
   end
   
   def create
-    @purchase = Purchase.find_or_create_by_profile_id_and_app_id(params[:profile_id], @app.id)
+    @purchase = Purchase.find_or_create_by_profile_id_and_app_id(params[:profile_id], params[:app_id])
     render(:json => @purchase.to_hash)
   end
   
   def destroy
-    @purchase = Purchase.find_by_profile_id_and_app_id(params[:profile_id], @app.id)
+    @purchase = Purchase.find_by_profile_id_and_app_id(params[:profile_id], params[:app_id])
     @purchase.destroy
     render(:json => @purchase.to_hash)
   end
