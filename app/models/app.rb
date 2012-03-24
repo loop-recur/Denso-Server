@@ -9,6 +9,6 @@ class App < ActiveRecord::Base
   has_attached_file :image, PAPERCLIP_DEFAULTS.merge(:default_url => ":class/:style.png",
                                                      :styles => { :thumb => "87x87#"})
   def to_hash
-    attributes.merge(:price => price.to_s, :image => image.url, :download => package.url, :installed => installed?)
+    attributes.merge(:price => price.to_s, :image => image.url(:original, false), :download => package.url, :installed => installed?)
   end
 end
